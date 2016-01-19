@@ -15,7 +15,7 @@ var server = http.createServer(function(request, response) {
         route_ = g.pathname;
     }
     absroute = "."+route_;
-    
+ 
     request.setEncoding('utf8');
     if(request.method=='POST'){
       var lista ='';
@@ -30,7 +30,7 @@ var server = http.createServer(function(request, response) {
               response.setHeader("Set-Cookie", ["codigo="+t['codigo'], "usuario="+t['usuario'], "rol="+t["rol"]]);
             }
             else {
-              response.end("<br><br><br><center><img src='Ban_sign.png'></center><center><h1>Esta aula aún no ha sido iniciada trate más tarde</h1></center><center><h1><a href='http://10.0.0.5/test/project/'>Volver</a></h1></center>");
+              response.end("<br><br><br><center><img src='Ban_sign.png'></center><center><h1>This classroom has not been initiated, try later </h1></center><center><h1><a href='http://10.0.0.5/test/project/'>Go back</a></h1></center>");
             }
         }
         if (t['rol']=='profesor') {
@@ -129,20 +129,16 @@ wsServer.on('request', function(request) {
                 }
                 else if (roooms[signal["key"]]["status"] === "connected"){
                     if (roooms[signal["key"]]["connection"][signal["id"]]==undefined){
-                        console.log("caso ya conectado nuevo peer");
                         signal["destination"] = signal["id"];
                         roooms[signal["key"]]["connection"][signal["id"]]=clients[signal["id"]];
                         roooms[signal["key"]]["connection"]["instructor"].send(JSON.stringify(signal));
                         roooms[signal["key"]]["connection"][signal["id"]].send(JSON.stringify(signal));
                     }
                     else{
-                        console.log("caso ya conectado peers existentes");
                         if (signal["id"] == "instructor"){
-                            console.log("enviando al cliente");
                             roooms[signal["key"]]["connection"][signal["destination"]].send(JSON.stringify(signal));
                         }
                         else if (signal["id"] != "instructor"){
-                            console.log("enviado al instructor");
                             roooms[signal["key"]]["connection"]["instructor"].send(JSON.stringify(signal));
                         }
                     }
